@@ -1,0 +1,61 @@
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.drag {
+  background-color: pink;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.draggable {
+  padding: 1rem;
+  background-color: antiquewhite;
+  border: 1px solid black;
+  cursor: move;
+}
+
+.draggable .dragging {
+  opacity: 0.5;
+}
+
+#question01,
+#question02 {
+  display: none;
+}
+
+label {
+  display: inline;
+}
+
+input {
+  display: block;
+}
+
+[type="radio"],
+[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  background-color: #ffa500;
+  cursor: pointer;
+  margin-right: 5px;
+  display: inline-block !important;
+}
+
+.helpMe {
+  visibility: hidden;
+}
+
+#checkAll {
+  margin-top: 1rem;
+}
+
+.wrong {
+  background-color: red;
+}
+
+.right {
+  background-color: lightgreen;
+}
+/*# sourceMappingURL=style.css.map */
