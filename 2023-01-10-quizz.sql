@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: quizz
--- Generation Time: 2023-01-02 19:06:38.4530
+-- Generation Time: 2023-01-10 06:29:32.7710
 -- -------------------------------------------------------------
 
 
@@ -22,14 +22,14 @@ DROP TABLE IF EXISTS `answers`;
 CREATE TABLE `answers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `questionId` int(11) DEFAULT NULL,
-  `answers` varchar(500) DEFAULT NULL,
+  `answers` text DEFAULT NULL,
   `userId` int(11) DEFAULT NULL,
   `addedAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `questionId` (`questionId`),
   CONSTRAINT `answers_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `questions` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=383 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1309 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `games`;
 CREATE TABLE `games` (
@@ -39,7 +39,7 @@ CREATE TABLE `games` (
   PRIMARY KEY (`id`),
   KEY `games_FK` (`userId`),
   CONSTRAINT `games_FK` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `questions`;
 CREATE TABLE `questions` (
@@ -51,7 +51,7 @@ CREATE TABLE `questions` (
   PRIMARY KEY (`id`),
   KEY `questions_FK` (`subjectId`),
   CONSTRAINT `questions_FK` FOREIGN KEY (`subjectId`) REFERENCES `subject` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=420 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `results`;
 CREATE TABLE `results` (
@@ -62,7 +62,7 @@ CREATE TABLE `results` (
   KEY `results_FK_1` (`questionId`),
   CONSTRAINT `results_FK` FOREIGN KEY (`gameId`) REFERENCES `games` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `results_FK_1` FOREIGN KEY (`questionId`) REFERENCES `questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `subject`;
 CREATE TABLE `subject` (
@@ -70,7 +70,7 @@ CREATE TABLE `subject` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
@@ -78,7 +78,7 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `PASSWORD` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `answers` (`id`, `questionId`, `answers`, `userId`, `addedAt`, `status`) VALUES
 (1, 1, 'zeitliche Präferenzen', 1, '2022-12-30 22:38:05', 1),
@@ -178,7 +178,54 @@ INSERT INTO `answers` (`id`, `questionId`, `answers`, `userId`, `addedAt`, `stat
 (95, 95, 'aa37', 1, '2022-12-30 22:38:05', 1),
 (96, 96, '11111011', 1, '2022-12-30 22:38:05', 1),
 (97, 97, 'FFFFFFFB', 1, '2022-12-30 22:38:05', 1),
-(382, 68, 'test', 1, '2022-12-30 23:01:45', 1);
+(382, 68, 'test', 1, '2022-12-30 23:01:45', 1),
+(1216, 324, 'aus Gründen der Ausfallsicherheit', 3, '2023-01-08 10:10:09', 1),
+(1217, 325, 'LWL Lichtwellenleiter,Patchkabel Kupferkabel(Netzwerkkabel),WLan WirelessLAN (kabellose Netzwerkverbindung)', 3, '2023-01-08 10:10:09', 1),
+(1218, 326, 'größere Distanzen sind überbrückbar;ist unempfindlich gegenüber Magnetfeldern;erlaubt noch höhere Übertragungsgeschwindigkeiten;', 3, '2023-01-08 10:10:09', 1),
+(1219, 327, 'hohe Konfektionierungskosten (Spleißen);LWL-Technik ist teurer als Cu(Kupfer)-Technik;', 3, '2023-01-08 10:10:09', 1),
+(1220, 328, '100 m', 3, '2023-01-08 10:10:09', 1),
+(1221, 329, 'Cat 6', 3, '2023-01-08 10:10:09', 1),
+(1222, 330, '11Mbit/s und 54Mbit/s Übertragungsgeschwindigkeiten;ISM-Band (Frequenzbereich 2,4 GHz);', 3, '2023-01-08 10:10:09', 1),
+(1223, 331, '11Mbit/s, 54Mbit/s und 600Mbit/s Übertragungsgeschwindigkeiten;abwärtskompatibel zu IEEE 802.11 b und IEEE 802.11 g;kompatibel zu IEEE 802.11 ac;', 3, '2023-01-08 10:10:09', 1),
+(1224, 332, 'der Datenstrom muss verschlüsselt werden', 3, '2023-01-08 10:10:09', 1),
+(1225, 333, 'um Schichten austauschen und modernisieren zu können', 3, '2023-01-08 10:10:09', 1),
+(1226, 334, 'MAC-Adresse', 3, '2023-01-08 10:10:09', 1),
+(1227, 335, 'sollte weltweit einmalig sein', 3, '2023-01-08 10:10:09', 1),
+(1228, 336, 'verwirft es', 3, '2023-01-08 10:10:09', 1),
+(1229, 337, 'sie muss in einen besonderen (SNIFFING) Modus gesetzt werden', 3, '2023-01-08 10:10:09', 1),
+(1230, 338, 'in einem Netzwerk mit Kupferkabel;in einem Netzwerk mit LWL-Kabeln;', 3, '2023-01-08 10:10:09', 1),
+(1231, 339, 'im WLAN', 3, '2023-01-08 10:10:09', 1),
+(1232, 340, '2', 3, '2023-01-08 10:10:09', 1),
+(1233, 341, 'ein Switch, der ein physikalisches Netz in mehrere logische Netze aufteilen kann', 3, '2023-01-08 10:10:09', 1),
+(1234, 342, 'MAC-Adresse ', 3, '2023-01-08 10:10:09', 1),
+(1235, 343, 'höhere Sicherheit gegen Sniffing;höhere Geschwindigkeit des Gesamtnetzes;', 3, '2023-01-08 10:10:09', 1),
+(1236, 344, 'Datenaustausch, Kostenersparnis, Geräte können im Netzwerk geteilt werden, Datensicherheit', 3, '2023-01-08 10:10:09', 1),
+(1237, 345, 'Trojaner-anfällig (können verteilt werden), Viren-anfällig (können verteilt werden),\nNetzwerke müssen beaufsichtigt und betreut werden (KOSTEN), Daten können ausspioniert werden,Extra Hard und Software-Kosten', 3, '2023-01-08 10:10:09', 1),
+(1238, 346, 'Stern-Topologie, Ring-Topologie, Bus-Topologie', 3, '2023-01-08 10:10:09', 1),
+(1239, 347, '50mW', 3, '2023-01-08 10:10:09', 1),
+(1285, 396, 'aus Gründen der Ausfallsicherheit', 3, '2023-01-09 16:49:10', 1),
+(1286, 397, 'um einzelne Schichten austauschen / modernisieren zu können', 3, '2023-01-09 16:49:10', 1),
+(1287, 398, 'Kupferkabel; Funkwellen Optische Medien;', 3, '2023-01-09 16:49:10', 1),
+(1288, 399, 'hohe Konfektionierungskosten; LWL-Netzwerkkarten sind vergleichsweise teuer;', 3, '2023-01-09 16:49:10', 1),
+(1289, 400, '100 M', 3, '2023-01-09 16:49:10', 1),
+(1290, 401, '6', 3, '2023-01-09 16:49:10', 1),
+(1291, 402, 'kompatibel zu IEEE 802.11 n (WIFI 4) und ac (WIFI 5);Übertragungsgeschwindigkeit bis zu 9600 Mbit/s;', 3, '2023-01-09 16:49:10', 1),
+(1292, 403, 'der Datenstrom sollte / muss verschlüsselt werden', 3, '2023-01-09 16:49:10', 1),
+(1293, 404, '12.5mW', 3, '2023-01-09 16:49:10', 1),
+(1294, 405, 'MAC-Addresse', 3, '2023-01-09 16:49:10', 1),
+(1295, 406, 'Eindeutigkeit: Die Netzwerkadresse eines Geräts muss innerhalb des Netzwerks eindeutig sein, das heißt, es darf kein anderes Gerät im Netzwerk die gleiche Netzwerkadresse haben.\n\nGlobale Gültigkeit: Die Netzwerkadresse eines Geräts gilt weltweit und ist unabhängig von der geografischen Lage des Geräts.\n\nUnveränderlichkeit: Die Netzwerkadresse eines Geräts ist in der Regel fest verdrahtet und kann nicht ohne Weiteres geändert werden. Sie dient daher als dauerhafte Identifikation des Geräts innerhalb des Netzwerks.', 3, '2023-01-09 16:49:10', 1),
+(1296, 407, 'verwirft es', 3, '2023-01-09 16:49:10', 1),
+(1297, 408, 'der Vorgesetzte ist zu informieren;der Betriebsrat (wenn vorhanden) ist zu informieren;', 3, '2023-01-09 16:49:10', 1),
+(1298, 409, 'Netzwerken mit Kupferkabeln;in Netzwerken mit LWL-Kabeln;', 3, '2023-01-09 16:49:10', 1),
+(1299, 410, 'im WLAN', 3, '2023-01-09 16:49:10', 1),
+(1300, 411, '2', 3, '2023-01-09 16:49:10', 1),
+(1301, 412, 'ein Switch, der ein physisches Netz in mehrere logische Netze aufteilen kann', 3, '2023-01-09 16:49:10', 1),
+(1302, 413, 'MAC-Addresse', 3, '2023-01-09 16:49:10', 1),
+(1303, 414, 'eine höhere Sicherheit gegen Sniffing wird erreicht;eine höhere Geschwindigkeit des gesamten Netzes wird erreicht;', 3, '2023-01-09 16:49:10', 1),
+(1304, 415, 'Datenaustausch, Kostenersparnis, Geräte können im Netzwerk geteilt werden, Datensicherheit', 3, '2023-01-09 16:49:10', 1),
+(1305, 416, 'Trojaner-anfällig (können verteilt werden), Viren-anfällig (können verteilt werden),\nNetzwerke müssen beaufsichtigt und betreut werden (KOSTEN), Daten können ausspioniert werden,Extra Hard und Software-Kosten', 3, '2023-01-09 16:49:10', 1),
+(1306, 417, 'Stern-Topologie, Ring-Topologie, Bus-Topologie', 3, '2023-01-09 16:49:10', 1),
+(1308, 419, 'Bündelung mehrerer physischer Ports zu einem logischen Port', 3, '2023-01-09 16:49:10', 1);
 
 INSERT INTO `questions` (`id`, `question`, `typeOfQuestion`, `status`, `subjectId`) VALUES
 (1, 'Eine Hausfrau kauft am Markt meistens kurz vor Schluss ein, weil sie dann ihre Früchte billiger erhält:;Homogenität der Güter;persönliche Präferenzen;räumliche Präferenzen;zeitliche Präferenzen;Markttransparenz', 'multiSingle', 1, 1),
@@ -277,18 +324,69 @@ INSERT INTO `questions` (`id`, `question`, `typeOfQuestion`, `status`, `subjectI
 (94, '1010 1010 0011 0111 in Dezimadezimal', 'nothing', 1, 4),
 (95, '1010 1010 0011 0111 in Hexadezimal', 'nothing', 1, 4),
 (96, '-5 in Dualzahl', 'nothing', 1, 5),
-(97, '-5 in Hexadezimal', 'nothing', 1, 5);
+(97, '-5 in Hexadezimal', 'nothing', 1, 5),
+(324, 'Warum ist das Internet vermascht aufgebaut?;um Kosten zu sparen;aus Gründen der Ausfallsicherheit;hat sich historisch ergeben;um Kabel zu sparen;aus Gründen der Übersichtlichkeit', 'multiSingle', 1, 6),
+(325, 'Geben Sie bitte 3 Medien an, die zur Datenübertragungen in Netzwerken eingesetzt werden. (X 3)', 'nothing', 1, 6),
+(326, 'Welche Vorteile bietet LWL gegenüber Kupferkabeln (X 3) ?;ist Kostengünstiger bei der Konfektionierung;größere Distanzen sind überbrückbar;ist unempfindlich gegenüber Magnetfeldern;erlaubt noch höhere Übertragungsgeschwindigkeiten;LWL-Technik ist Preiswerter als Cu(Kupfer)-Technik', 'multiMulti', 1, 6),
+(327, 'Welche(n) Nachteil(e) hat LWL gegenüber Kupferkabel (X 2) ?;hohe Konfektionierungskosten (Spleißen);nur geringe Entfernungen sind überbrückbar;ist empfindlicher gegenüber Magnetfeldern;erlaubt nur geringe Übertragungsgeschwindigkeiten;LWL-Technik ist teurer als Cu(Kupfer)-Technik', 'multiMulti', 1, 6),
+(328, 'Wie lang darf ein TP-Kabel für eine Netzwerkverbindung maximal sein?;10 m;50 m;100 m;150 m;200 m', 'multiSingle', 1, 6),
+(329, 'Welcher Kategorie muss ein TP-Kabel entsprechen um 1000Mbit/s zu übertragen?;Cat 2; Cat 3;Cat 4;Cat 5;Cat 6', 'multiSingle', 1, 6),
+(330, 'Was bedeutet WLAN nach Standard IEEE 802.11 g  (X 2)  ?;Nur 54Mbit/s Übertragungsgeschwindigkeit; 11Mbit/s und 54Mbit/s Übertragungsgeschwindigkeiten;ISM-Band (Frequenzbereich 2,4 GHz);Frequenzbereich 5 GHz;kompatibel zu IEEE 802.11 a', 'multiMulti', 1, 6),
+(331, 'Was bedeuten WLAN nach Standart IEEE 802.11 n (X 3) ?;Nur 54Mbit/s Übertragungsgeschwindigkeit;11Mbit/s, 54Mbit/s und 600Mbit/s Übertragungsgeschwindigkeiten;abwärtskompatibel zu IEEE 802.11 b und IEEE 802.11 g;kompatibel zu IEEE 802.11 ac;nur 600Mbit/s', 'multiMulti', 1, 6),
+(332, 'Was ist beim Einsatz eines WLANs nach IEEE 802.11 zu beachten?;ist immer einer Kabelverbindung vor zu ziehen;die Reichweite ist auf wenige cm begrenzt;der Datenstrom muss nicht verschlüsselt werden;der Datenstrom muss verschlüsselt werden;ist auf jeden Fall schneller, als eine Kabelverbindung', 'multiSingle', 1, 6),
+(333, 'Warum ist das OSI-Model in Schichten aufgebaut?;ist historisch gewachsen;nur in Schichten aufgebaute Modelle funktionieren;um Schichten austauschen und modernisieren zu können;nur in Schichten aufgebaute Modelle sind schnell;aus Gründen der Übersichtlichkeit', 'multiSingle', 1, 6),
+(334, 'Welche besondere Netzwerkadresse trägt eine Netzwerkkarte?', 'nothing', 1, 6),
+(335, 'Welche Besonderheit hat diese Netzwerkkarten-Adresse?;sollte weltweit einmalig sein;ändert sich täglich;wird binär dargestellt;wird dezimal dargestellt;ist so lang wie ein Datenpaket', 'multiSingle', 1, 6),
+(336, 'Was macht eine Netzwerkkarte mit einem Datenpaket, das nicht für sie bestimmt ist?;speichert es;schickt es als UNERWÜNSCHT zurück;verwirft es;analysiert es;gibt es an die höheren Schichten weiter', 'multiSingle', 1, 6),
+(337, 'Was muss mit der Netzwerkkarte geschehen, wenn man einen Sniffer einsetzen möchte?;sie muss im PCI-Slot stecken;sie muss im PCIe-Slot stecken;sie muss im AGP-slot stecken;sie muss in einen besonderen (SNIFFING) Modus gesetzt werden;sie muss einen LWL-Anschluss besitzen', 'multiSingle', 1, 6),
+(338, 'Wo wird CSMA/CD eingesetzt (x2) ?;in einem Netzwerk mit Kupferkabel;in einem Netzwerk mit LWL-Kabeln;im WLAN;bei Übertragung über seriellen Port;bei Übertragung über den Parallelport', 'multiMulti', 1, 6),
+(339, 'Wo wir CSMA/CA eingesetzt?;in einem Netzwerk mit Kupferkabel;in einem Netzwerk mit LWL-Kabel;im WLAN;bei Übertragung über seriellen Port;bei Übertragung über den Parallelport', 'multiSingle', 1, 6),
+(340, 'Zu welcher Schicht des OSI-Models wird die MAC-Adresse gezählt?;1;3;5;9;2', 'multiSingle', 1, 6),
+(341, 'Was ist ein VLAN Switch?;ein Switch für drahtlose Netzwerke;ein Switch für WiMax;ein Switch für Bluetooth;ein Switch, der verschlüsselte Verbindungen aufbaut;ein Switch, der ein physikalisches Netz in mehrere logische Netze aufteilen kann', 'multiSingle', 1, 6),
+(342, 'Welche Adresse nutzt ein Switch für die innere Verarbeitung?', 'nothing', 1, 6),
+(343, 'Was wird durch den Austausch eines HUBs gegen einen Switch erreicht (x2) ?;es ist einfach zu Sniffen;höhere Sicherheit gegen Sniffing;höhere Geschwindigkeit des Gesamtnetzes;das Netz kann SCSI Kommandos verarbeiten;das Netz kann DIE Kommandos verarbeiten', 'multiMulti', 1, 6),
+(344, 'Nennen Sie 2 Vorteile eines Netzwerks', 'nothing', 1, 6),
+(345, 'Nennen Sie 2 Nachteile eines Netzwerks', 'nothing', 1, 6),
+(346, 'Nennen Sie die 3 Topologie Grundformen', 'nothing', 1, 6),
+(347, 'Eine Antenne hat einen Gewinn von 13dBi.\nDer Gesetzgeber lässt im 5 GHz Bereich eine Maximale Ausgangsleistung von 1000 mW EIRP zu.\nAuf welchen Wert muss die Ausgangsleistung (ERP) bei der o.g. Antennen reduziert werden?', 'nothing', 1, 6),
+(396, 'Warum ist das Internet vermascht aufgebaut?;um Kosten zu sparen;aus Gründen der Ausfallsicherheit;hat sich historisch ergeben;um Kabel zu sparen;aus Gründen der Übersichtlichkeit', 'multiSingle', 1, 7),
+(397, 'Warum ist das OSI-Modell in Schichten aufgebaut?;hat sich historisch ergeben;nur in Schichten aufgebaute Modelle funktionieren;um einzelne Schichten austauschen / modernisieren zu können;nur in Schichten aufgebaute Modelle sind schnell;nur in Schichten aufgebaute Modelle haben eine geringe Latenz', 'multiSingle', 1, 7),
+(398, 'Welche Medien (Schicht 0) werden zur Datenübertragung eingesetzt (X 3) ?', 'nothing', 1, 7),
+(399, 'Welche Nachteile hat Lichtwellenleiter (LWL) gegenüber Kupferkabeln (x2)?;hohe Konfektionierungskosten;nur geringe Entfernungen sind überbrückbar;ist empfindlich gegenüber Magnetfeldern;erlaubt nur geringe Übertragungsgeschwindigkeiten;LWL-Netzwerkkarten sind vergleichsweise teuer', 'multiMulti', 1, 7),
+(400, 'Wie lang darf ein TP-Kabel für eine Netzwerkverbindung maximal sein?', 'nothing', 1, 7),
+(401, 'Welcher Kategorie muss ein TP-Kabel entsprechen, um 1000 Mbit/s übertragen zu können?', 'nothing', 1, 7),
+(402, 'Welchen Vorteil hat der WLAN-Standard IEEE 802.11 ax (WIFI 6) (x2)?;bis zu 11 Mbit/s Übertragungsgeschwindigkeit;bis zu 30 Mbit/s Übertragungsgeschwindigkeit;bis zu 54 Mbit/s Übertragungsgeschwindigkeit;kompatibel zu IEEE 802.11 n (WIFI 4) und ac (WIFI 5);Übertragungsgeschwindigkeit bis zu 9600 Mbit/s', 'multiMulti', 1, 7),
+(403, 'Was ist beim Einsatz eines WLANS zu beachten?;ist immer einer Kabelverbindung vorzuziehen;die Reichweite ist auf Sichtweite begrenzt;der Datenstrom sollte / muss nicht verschlüsselt werden;der Datenstrom sollte / muss verschlüsselt werden;ist auf jeden Fall sicherer, als eine LWL-Verbindung', 'multiSingle', 1, 7),
+(404, 'Eine Antenne hat einen Gewinn von 19 dB. <br>Wie hoch darf dieAusgangsleistung (ERP) sein, wenn der Gesetzgeber eine maximale Strahlungsleistung von 1000 mW (EIRP) erlaubt?', 'nothing', 1, 7),
+(405, 'Welche besondere Adresse trägt die Netzwerkkarte?', 'nothing', 1, 7),
+(406, 'Nennen Sie 3 Eigenschaft der Nezwerkarten-Adresse:', 'nothing', 1, 7),
+(407, 'Was macht eine Netzwerkkarte mit einem Datenpaket, das nicht für sie bestimmt ist?;speichert es;schickt es als unerwünscht zurück;verwirft es;analysiert es;gibt es an die höheren Schichten weiter', 'multiSingle', 1, 7),
+(408, 'Was ist zu beachten, wenn man betrieblich einen Sniffer einsetzt (x2) ?;der Vorgesetzte ist zu informieren;der Einsatz eines Sniffers ist grundsätzlich verboten;der Einsatz eines Sniffers ist grundsätzlich erlaubt;der Betriebsrat (wenn vorhanden) ist zu informieren;die gesamte Belegschaft ist zu informieren', 'multiMulti', 1, 7),
+(409, 'Wo wird CSMA/CD eingesetzt?;Netzwerken mit Kupferkabeln;in Netzwerken mit LWL-Kabeln;im WLAN;beim Einsatz eines Sniffers;bei der Übertragungen paralleler Daten', 'multiMulti', 1, 7),
+(410, 'Wo wird CSMA/CA eingesetzt?;in Netzwerken mit Kupferkabeln;in Netzwerken mit LWL-Kabeln;im WLAN;beim Einsatz eines Sniffers;bei der Übertragungen paralleler Daten', 'multiSingle', 1, 7),
+(411, 'Zu welcher Schicht des OSI-Modells wird ein simpler (unmanaged) Switch gerechnet?', 'nothing', 1, 7),
+(412, 'Was ist ein VLAN-Switch?;ein Switch für drahtlose Netze;ein Switch für WiMax;ein Switch für Bluetooth;ein Switch, der verschlüsselte Verbindungen aufbaut;ein Switch, der ein physisches Netz in mehrere logische Netze aufteilen kann', 'multiSingle', 1, 7),
+(413, 'Welche Adresse nutzt der VLAN-Switch für die interne Verarbeitung?', 'nothing', 1, 7),
+(414, 'Was wird durch den Austausch eines Hubs, gegen einen Switch erreicht?;es ist einfacher zu sniffen;eine höhere Sicherheit gegen Sniffing wird erreicht;eine höhere Geschwindigkeit des gesamten Netzes wird erreicht;das Netzwerk kann iSCSI-Kommandos übertragen;das Netzwerk kann IDE-Kommandos verarbeiten', 'multiMulti', 1, 7),
+(415, 'Nennen Sie einen Vorteil eines Netzwerkes', 'nothing', 1, 7),
+(416, 'Nennen Sie einen Nachteil eines Netzwerkes', 'nothing', 1, 7),
+(417, 'Nennen Sie die 3 Topologie-Grundformen', 'nothing', 1, 7),
+(419, 'Was bedeutet Link-Aggregation (Trunking, Bonding)?;Bündelung mehrerer physischer Ports zu einem logischen Port;Bündelung mehrerer logischer Ports zu einem physischen Port;gleichbedeutend mit Tagging;das Kennzeichnen eines Datenpaketes;die Speicherung der Konfigurationsdatei eines Switches', 'multiSingle', 1, 7);
 
 INSERT INTO `subject` (`name`, `id`, `status`) VALUES
 ('wiso2', 1, 1),
-('NT1', 2, 1),
+('NT', 2, 1),
 ('wiso1', 3, 1),
 ('dt1', 4, 1),
-('dt2', 5, 1);
+('dt2', 5, 1),
+('NT1', 6, 1),
+('NT2', 7, 1);
 
 INSERT INTO `users` (`username`, `id`, `PASSWORD`) VALUES
 ('greg', 1, '$2y$10$kGFUUUFkyweAVae0QUbXc.GhAMMQ2/QnNWgVFDVky1vdgf5MFyV2i'),
-('testUser', 2, '$2y$10$YxhejoNqmw/mFm/Cfee9AeGE8grfjANPiZ097rd.gskje6f.48r/m');
+('testUser', 2, '$2y$10$YxhejoNqmw/mFm/Cfee9AeGE8grfjANPiZ097rd.gskje6f.48r/m'),
+('admin', 3, '$2y$10$5NNKc/N4IMQll32YeCrSJeUq54cM6gn54idLgC06S8S3o9OR5ETeG'),
+('Alpha', 4, '$2y$10$dDrPDZuknI/Qpo//LtHKbuQ1kZVVykcrTq/CHqHtgBp2uuI8ybVYm');
 
 
 
