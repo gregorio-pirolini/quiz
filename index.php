@@ -99,8 +99,23 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </li>
                  
               </ul></li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"  data-class="NT1" >Network Technik</a>
+          
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+              NT
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" data-class="NT" >NT KB</a></li>
+                <li><a class="dropdown-item" href="#" data-class="NT1">NT 1</a></li>
+                <li><a class="dropdown-item" href="#" data-class="NT2">NT 2</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                </ul>
             </li>
             <li class="nav-item dropdown">
               <a

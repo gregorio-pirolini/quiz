@@ -6,7 +6,7 @@ include 'connect.php';
     $dataClass= $_POST['dataClass'];
  }
 
-// $dataClass= "wiso1";
+//   $dataClass= "wiso2";
   // Do something with the dataClass variable
 
 // !has player already played?
@@ -35,8 +35,9 @@ $myValuesAnswersAsArray=[];
 //echo '<pre>' . var_export($myValues, true) . '</pre>';
 
 for ($i=0;$i<count($myValues);$i++) {
-   //set firts row
+ 
 if($i<1){
+   // echo "set firts row<br>";
       $add = $myValues[$i]['answer'];
       $myValuesAnswersAsArray[$i]['id']=$myValues[$i]['id'];
       $myValuesAnswersAsArray[$i]['question']=$myValues[$i]['question'];
@@ -51,10 +52,12 @@ for ($j=0;$j<count($myValuesAnswersAsArray);$j++) {
       if ($myValuesAnswersAsArray[$j]['id']==$myValues[$i]['id']) { 
 // $index=$j
 // ! already have this question just add to array answers
+// echo "already have this question just add to array answers ".$myValuesAnswersAsArray[$j]['id']."==".$myValues[$i]['id']."<br>";
 $add = $myValues[$i]['answer'];
 array_push($myValuesAnswersAsArray[$j]['answer'], $add);
       }else{
 // ! first time that we  have this question create array
+// echo "first time that we  have this question create array..........................<br>";
    $add = $myValues[$i]['answer'];
   $myValuesAnswersAsArray[$i]['id']=$myValues[$i]['id'];
   $myValuesAnswersAsArray[$i]['question']=$myValues[$i]['question'];
@@ -62,6 +65,7 @@ array_push($myValuesAnswersAsArray[$j]['answer'], $add);
   $myValuesAnswersAsArray[$i]['subjectId']=$myValues[$i]['subjectId'];
   $myValuesAnswersAsArray[$i]['answer']=[];
   array_push($myValuesAnswersAsArray[$i]['answer'], $add);
+  break;
    
       }  # code...
    }
@@ -71,7 +75,9 @@ array_push($myValuesAnswersAsArray[$j]['answer'], $add);
 
    
   
-
+// echo "<pre>";
+// var_dump($myValuesAnswersAsArray);
+// echo "<pre>";
 
 echo json_encode($myValuesAnswersAsArray);
 

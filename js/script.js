@@ -97,7 +97,7 @@ let whatis = (nb, element, tableName, verbe) => {
   }
   let label = document.createElement("label");
   label.setAttribute("for", tableName + "_" + element.id);
-  label.innerHTML = what + verbe + element.question + "? ";
+  label.innerHTML = what + verbe + element.question;
   let input = document.createElement("input");
   input.type = "text";
   input.id = tableName + "_" + element.id;
@@ -234,7 +234,7 @@ let multiSingle = (nb, element, tableName) => {
   questions.forEach((el) => {
     const br = document.createElement("br");
     let label = document.createElement("label");
-    label.setAttribute("for", tableName + "_" + element.id);
+    label.setAttribute("for", tableName + "_" + element.id + "_" + nbRadio);
     label.innerHTML = el;
     let input = document.createElement("input");
     input.type = "radio";
@@ -251,15 +251,13 @@ let multiSingle = (nb, element, tableName) => {
   });
 
   let answer = document.createElement("p");
+
   if (element.answer.length < 1) {
     answer.innerText = "??";
   } else {
-    if (element.answer.length < 1) {
-      answer.innerText = "??";
-    } else {
-      answer.innerText = element.answer;
-    }
+    answer.innerText = element.answer;
   }
+
   answer.className = "helpMe";
   answer.id = "help_" + element.id;
   let help = document.createElement("button");
@@ -317,7 +315,7 @@ let multiMulti = (nb, element, tableName) => {
   questions.forEach((el) => {
     const br = document.createElement("br");
     let label = document.createElement("label");
-    label.setAttribute("for", tableName + "_" + element.id);
+    label.setAttribute("for", tableName + "_" + element.id + "_" + nbCheckbox);
     label.innerHTML = el;
     let input = document.createElement("input");
     input.type = "checkbox";
@@ -334,15 +332,13 @@ let multiMulti = (nb, element, tableName) => {
   });
 
   let answer = document.createElement("p");
+
   if (element.answer.length < 1) {
     answer.innerText = "??";
   } else {
-    if (element.answer.length < 1) {
-      answer.innerText = "??";
-    } else {
-      answer.innerText = element.answer;
-    }
+    answer.innerText = element.answer;
   }
+
   answer.className = "helpMe";
   answer.id = "help_" + element.id;
   let help = document.createElement("button");
@@ -386,7 +382,7 @@ let sortOut = (nb, element, tableName) => {
 
   let label = document.createElement("label");
   label.setAttribute("for", tableName + "_" + element.id);
-  label.innerHTML = "Sort out " + element.question + "? ";
+  label.innerHTML = "Sort out " + element.question;
   let div = document.createElement("div");
   div.className = "drag";
   div.id = tableName + "_" + element.id;
