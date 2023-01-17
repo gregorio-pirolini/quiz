@@ -4,14 +4,14 @@ img {
 }
 
 .drag {
-  background-color: pink;
+  background-color: white;
   padding: 1rem;
   margin-top: 1rem;
 }
 
 .draggable {
   padding: 1rem;
-  background-color: antiquewhite;
+  background-color: #aaaabc;
   border: 1px solid black;
   cursor: move;
 }
@@ -52,10 +52,19 @@ input {
 }
 
 .wrong {
-  background-color: red;
+  background-color: #ed004a;
 }
 
 .right {
-  background-color: lightgreen;
+  background-color: #6cfbce;
+}
+
+#questions,
+#home {
+  display: none;
+}
+
+.bigTitle {
+  background-color: #ff5d7a;
 }
 /*# sourceMappingURL=style.css.map */

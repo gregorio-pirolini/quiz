@@ -19,16 +19,15 @@ let findGreetings = () => {
 
   return hello;
 };
+
 // !user info
 let getUserInfo = (path) => {
   fetch(path)
     .then((res) => res.json())
     .then((d) => {
       // console.log(d);
-
       const greetings = findGreetings();
       const hello = document.getElementById("hello");
-
       hello.innerText = greetings + " " + d.user;
     });
 };
@@ -37,7 +36,8 @@ let getUserInfo = (path) => {
 const start = document.getElementById("start");
 
 let buildQuestions = (arr, tableName) => {
-  start.innerHTML = "<h2>" + tableName + "</h2>";
+  start.innerHTML =
+    "<h1 class= 'bigTitle' id=" + tableName + ">" + tableName + "</h1>";
   let nb = 1;
 
   arr.forEach((element) => {
@@ -53,8 +53,12 @@ let buildQuestions = (arr, tableName) => {
       whatis(nb, element, tableName, "are ");
     } else if (element.typeOfQuestion == "nothing") {
       whatis(nb, element, tableName, "");
+    } else if (element.typeOfQuestion == "nothingImage") {
+      whatis(nb, element, tableName, "", "image");
     } else if (element.typeOfQuestion == "multiSingle") {
       multiSingle(nb, element, tableName);
+    } else if (element.typeOfQuestion == "multiSingleImage") {
+      multiSingle(nb, element, tableName, "image");
     } else if (element.typeOfQuestion == "multiMulti") {
       multiMulti(nb, element, tableName);
     } else {
@@ -87,7 +91,9 @@ let buildanswersUser = (arr, tableName) => {
   console.log("buildanswersUser answersDb", answersDb);
 };
 
-let whatis = (nb, element, tableName, verbe) => {
+
+ // ! questions making 1
+let whatis = (nb, element, tableName, verbe, image) => {
   let number = document.createElement("div");
   let h3 = document.createElement("h3");
   h3.innerText = "question " + nb;
@@ -97,7 +103,20 @@ let whatis = (nb, element, tableName, verbe) => {
   }
   let label = document.createElement("label");
   label.setAttribute("for", tableName + "_" + element.id);
-  label.innerHTML = what + verbe + element.question;
+  let questions;
+  if (image == "image") {
+    questions = element.question.split(";");
+    imgDiv = document.createElement("div");
+    let img = document.createElement("img");
+    img.src = questions[0];
+    imgDiv.appendChild(img);
+    //remove Picture from array
+    questions.shift();
+    label.innerHTML = what + verbe + questions[0];
+  } else {
+    label.innerHTML = what + verbe + element.question;
+  }
+
   let input = document.createElement("input");
   input.type = "text";
   input.id = tableName + "_" + element.id;
@@ -143,6 +162,9 @@ let whatis = (nb, element, tableName, verbe) => {
   });
   number.appendChild(h3);
   number.appendChild(label);
+  if (image == "image") {
+    number.appendChild(imgDiv);
+  }
   number.appendChild(input);
   number.appendChild(answer);
   number.appendChild(help);
@@ -151,7 +173,7 @@ let whatis = (nb, element, tableName, verbe) => {
 
   start.appendChild(number);
 };
-
+// ! questions making 2
 let explain = (nb, element, tableName) => {
   let number = document.createElement("div");
   let h3 = document.createElement("h3");
@@ -213,7 +235,8 @@ let explain = (nb, element, tableName) => {
 
   start.appendChild(number);
 };
-let multiSingle = (nb, element, tableName) => {
+// ! questions making 3
+let multiSingle = (nb, element, tableName, image) => {
   let questions = element.question.split(";");
   let number = document.createElement("div");
   number.id = tableName + "_" + element.id;
@@ -226,9 +249,22 @@ let multiSingle = (nb, element, tableName) => {
   h3.innerText = "question " + nb;
 
   let h6 = document.createElement("h6");
+  let imgDiv;
+  if (image == "image") {
+    imgDiv = document.createElement("div");
+    let img = document.createElement("img");
+    img.src = questions[0];
+    imgDiv.appendChild(img);
+    //remove Picture from array
+    questions.shift();
+  }
+
   h6.innerText = questions[0];
   number.appendChild(h3);
   number.appendChild(h6);
+  if (image == "image") {
+    number.appendChild(imgDiv);
+  }
   questions.shift();
   let nbRadio = 0;
   questions.forEach((el) => {
@@ -294,6 +330,7 @@ let multiSingle = (nb, element, tableName) => {
 
   start.appendChild(number);
 };
+// ! questions making 4
 let multiMulti = (nb, element, tableName) => {
   let questions = element.question.split(";");
   let number = document.createElement("div");
@@ -375,6 +412,8 @@ let multiMulti = (nb, element, tableName) => {
 
   start.appendChild(number);
 };
+
+// ! questions making 5
 let sortOut = (nb, element, tableName) => {
   let number = document.createElement("div");
   let h3 = document.createElement("h3");
@@ -486,7 +525,7 @@ let sortOut = (nb, element, tableName) => {
     });
   });
 };
-
+// ! ???
 let addAnswerToArrayAndDb = (e, input) => {
   // input = text, radio,checkbox, drag
   //event data id tadatable
@@ -496,6 +535,8 @@ let addAnswerToArrayAndDb = (e, input) => {
   //add to db
   console.log(table, id, input);
 };
+
+// ! questions making xx
 let abv = (nb, element, tableName) => {
   let number = document.createElement("div");
   let h3 = document.createElement("h3");
@@ -556,13 +597,6 @@ let abv = (nb, element, tableName) => {
   number.appendChild(correct);
 
   start.appendChild(number);
-
-  // <label for="fname">First name:</label>
-  //     <input type="text" id="fname" name="fname">
-  //     <div class="answer">answer</div>
-  //     <button class="help">help</button>
-  //     <button class="check">check</button>
-  //     <button class="correct">correct</button>
 };
 
 //! get values to make questions
@@ -583,7 +617,7 @@ let getValues = (path, tableName) => {
       buildanswersUser(d, tableName);
     });
 };
-//                       drag and drop             //
+// !        始め               drag and drop        始め     //
 let hoveringId = null;
 function getDragAfterElement(drag, y) {
   const draggableElements = [
@@ -603,16 +637,16 @@ function getDragAfterElement(drag, y) {
     { offset: Number.NEGATIVE_INFINITY }
   ).element;
 }
-//                       drag and drop             //
+// !            終わり  drag and drop     終わり        //
 
-//show answersUser
+// !show answersUser
 let answersShow = (e) => {
   let id = e.target.getAttribute("data-id");
   let tableName = e.target.getAttribute("data-table");
   document.getElementById("help_" + id).style.visibility = "visible";
   answersDb[tableName][id]["helped"] = true;
 };
-
+// !removeClass
 let removeClass = (e, radioCheckBox) => {
   // console.log("remove class");
   let id;
@@ -629,7 +663,7 @@ let removeClass = (e, radioCheckBox) => {
   id.classList.remove("right");
 };
 
-//hide answersUser
+// ! hide answersUser
 let answersHide = (e) => {
   let id = e.target.getAttribute("data-id");
 
@@ -835,7 +869,8 @@ getUserInfo("php/getuserinfo.php");
 //load Questions
 
 const nav_items = document.querySelectorAll(".nav-item");
-
+const home = document.getElementById("home");
+const questions = document.getElementById("questions");
 nav_items.forEach((element) => {
   element.addEventListener("click", function (e) {
     // Get the value of the data-class attribute
@@ -845,27 +880,29 @@ nav_items.forEach((element) => {
       let dataClass = e.target.getAttribute("data-class");
       console.log("..............");
       console.log(dataClass);
-
-      getValues("php/getValues.php", dataClass);
+      if (dataClass == "Home") {
+        home.style.display = "block";
+        questions.style.display = "none";
+      } else {
+        home.style.display = "none";
+        questions.style.display = "block";
+        getValues("php/getValues.php", dataClass);
+      }
     }
   });
 });
 
+
+let loadMenu = () =>
+{ 
+  
+  
+}
+
+
+
 // Set the variable to be sent
-var dataClass = "some value";
 
-// Send the variable to the PHP file using the POST method
-fetch("php/file.php", {
-  method: "POST",
-  body: JSON.stringify({
-    dataClass: dataClass,
-  }),
-  headers: {
-    "Content-Type": "application/json",
-  },
-}).then((response) => {
-  // Do something with the response
-  // console.log(response);
-});
-
-getValues("php/getValues.php", "wiso1");
+// START ING HERRE
+// getValues("php/getValues.php", "wiso1");
+home.style.display = "block";

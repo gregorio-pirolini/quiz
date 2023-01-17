@@ -159,7 +159,7 @@ $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
 	 $answer=$t[1];
 	 $typeOfQuestion=$t[2];
 	 $status=1;
-	 $subjectId=7;
+	 $subjectId=10;
  // process element here;
  // access column by index
  	// echo $i."---".$t[0].",".$t[1].",".$t[2].",".$t[3]." <br>";

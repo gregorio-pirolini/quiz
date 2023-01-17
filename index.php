@@ -59,6 +59,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     ?>
   </head>
   <body>
+    <!--  nav -->
   <div class="container">
     <nav class="navbar navbar-expand-lg bg-light">
       <div class="container-fluid">
@@ -77,7 +78,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link active" aria-current="page" href="#" data-class="Home" >Home</a>
             </li>
             
             <li class="nav-item dropdown">
@@ -128,8 +129,11 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 Wiso
               </a>
               <ul class="dropdown-menu">
+    
                 <li><a class="dropdown-item" href="#" data-class="wiso1" >wiso 1</a></li>
                 <li><a class="dropdown-item" href="#" data-class="wiso2">wiso 2</a></li>
+                <li><a class="dropdown-item" href="#" data-class="wiso3">wiso 3</a></li>
+                <li><a class="dropdown-item" href="#" data-class="wiso4">wiso 4</a></li>
                 <li><hr class="dropdown-divider" /></li>
                 <li>
                   <a class="dropdown-item" href="#">Something else here</a>
@@ -162,36 +166,46 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 
     
+   
+    </div>
+    
+    
+    <div id="questions">
+    <div class="container" id='start'>
+      
+    </div>
+    
+    <div class="container">
+    <button class="btn btn-primary mb-5 ms-1" id="checkAll">check answers</button>
+
+    </div>
+    </div><!--  questions -->
+
+    <div id="home">
+    <div class="container">
     <h1 id="hello">Quizz!!</h1>
     
  
 
-      <img id="play" src="img/play.jpg" />
+    <img id="play" src="img/play.jpg" />
+    <h1>Home</h1>
+    <h2>Was bisher geshah...</h2>
+    <div class="row">
+      <div class="col">
+<ul ><li>
+  fixed loading many answers to same question from data base
+<li>added image to question input type text and input type checkbox</li>
+
+
+</ul>
+
+      </div>
     </div>
     
-    
-    <div class="container" id='start'>
-      <h2>Questions:</h2>
-
-      <!-- <label for="fname">First name:</label>
-      <input type="text" id="fname" name="fname"> 
-      <div class="answer">answer</div>
-      <button class="help">help</button>
-      <button class="check">check</button>
-      <button class="correct">correct</button> -->
-
-      
-
-   
-
-     
     </div>
-    
-  <div class="container">
-    <button id="checkAll">check my answers</button>
+    </div><!--  home -->
 
-    </div>
-    
+
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"

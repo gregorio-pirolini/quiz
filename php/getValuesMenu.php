@@ -1,19 +1,8 @@
 <?php
 include 'connect.php';
 
- $_POST = json_decode(file_get_contents('php://input'), true);
- if(isset($_POST)){
-    $dataClass= $_POST['dataClass'];
- }
-
-      // $dataClass= "wiso4";
-  // Do something with the dataClass variable
-
-// !has player already played?
-// !no
-// $sql="SELECT q.* FROM questions q 
-// JOIN subject s ON q.subjectId = s.id WHERE s.name = '$dataClass'
-// AND q.status > 0";
+ 
+;
 $sql="SELECT q.*, a.answers as answer
 FROM questions q 
 JOIN subject s ON q.subjectId = s.id

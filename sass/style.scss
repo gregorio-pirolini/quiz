@@ -1,16 +1,18 @@
+@import "colors";
+
 img {
   max-width: 100%;
   height: auto;
 }
 
 .drag {
-  background-color: pink;
+  background-color: white;
   padding: 1rem;
   margin-top: 1rem;
 }
 .draggable {
   padding: 1rem;
-  background-color: antiquewhite;
+  background-color: $light;
 
   border: 1px solid black;
   cursor: move;
@@ -49,8 +51,16 @@ input {
   margin-top: 1rem;
 }
 .wrong {
-  background-color: red;
+  background-color: $red;
 }
 .right {
-  background-color: lightgreen;
+  background-color: $green;
+}
+
+#questions,
+#home {
+  display: none;
+}
+.bigTitle {
+  background-color: $pink;
 }
