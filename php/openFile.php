@@ -125,7 +125,10 @@ function uploadMe($userId,$question1,$answer1,$typeOfQuestion,$status,$subjectId
 
 require '../vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+ 
 $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+  
+ 
 
  //Read the excel file using the load() function. Here test.xlsx is the file name.
 
@@ -159,7 +162,7 @@ $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
 	 $answer=$t[1];
 	 $typeOfQuestion=$t[2];
 	 $status=1;
-	 $subjectId=10;
+	 $subjectId=23;
  // process element here;
  // access column by index
  	// echo $i."---".$t[0].",".$t[1].",".$t[2].",".$t[3]." <br>";

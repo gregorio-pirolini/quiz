@@ -44,11 +44,15 @@ let buildQuestions = (arr, tableName) => {
     if (element.typeOfQuestion == "abv") {
       abv(nb, element, tableName);
     } else if (element.typeOfQuestion == "explain") {
-      explain(nb, element, tableName);
+      explain(nb, element, tableName, "");
+    } else if (element.typeOfQuestion == "explainImage") {
+      explain(nb, element, tableName, "image");
     } else if (element.typeOfQuestion == "sort") {
       sortOut(nb, element, tableName);
     } else if (element.typeOfQuestion == "whats") {
-      whatis(nb, element, tableName, "is ");
+      whatis(nb, element, tableName, "is ", "");
+    } else if (element.typeOfQuestion == "whatsImage") {
+      whatis(nb, element, tableName, "is ", "image");
     } else if (element.typeOfQuestion == "whatr") {
       whatis(nb, element, tableName, "are ");
     } else if (element.typeOfQuestion == "nothing") {
@@ -91,164 +95,228 @@ let buildanswersUser = (arr, tableName) => {
   console.log("buildanswersUser answersDb", answersDb);
 };
 
+// Function to create buttons
+let createButtonHelp = (elementId, tableName) => {
+  let help = document.createElement("button");
+  help.value = "help";
+  help.innerHTML = "help";
+  help.className = "help btn btn-primary mb-5 ms-1";
+  help.setAttribute("data-id", elementId);
+  help.setAttribute("data-table", tableName);
+  help.addEventListener("mousedown", (e) => {
+    answersShow(e);
+  });
+  help.addEventListener("mouseup", (e) => {
+    answersHide(e);
+  });
+  return help;
+};
 
- // ! questions making 1
-let whatis = (nb, element, tableName, verbe, image) => {
+let createButtonCheck = (elementId, tableName) => {
+  let check = document.createElement("button");
+  check.value = "check";
+  check.innerHTML = "check";
+  check.className = "check btn btn-primary  mb-5 ms-1";
+  check.setAttribute("data-id", elementId);
+  check.setAttribute("data-table", tableName);
+  check.addEventListener("click", (e) => {
+    checkThis(e);
+  });
+  return check;
+};
+let createButtonCorrect = (elementId, tableName, value) => {
+  let correct = document.createElement("button");
+  correct.value = "correct";
+  correct.innerHTML = "correct";
+  correct.className = "correct btn btn-primary mb-5 ms-1";
+  correct.setAttribute("data-id", elementId);
+  correct.setAttribute("data-table", tableName);
+  correct.addEventListener("click", (e) => {
+    addAnswerToArrayAndDb(e, value);
+  });
+  return correct;
+};
+
+let createNumber = (klass, elementId, tableName) => {
   let number = document.createElement("div");
+  number.id = tableName + "_" + elementId;
+  number.className = klass;
+  number.addEventListener("click", (e) => {
+    removeClass(e);
+  });
+
+  return number;
+};
+let createH3 = (nb) => {
   let h3 = document.createElement("h3");
   h3.innerText = "question " + nb;
+  return h3;
+};
+let createH6 = (string) => {
+  let h6 = document.createElement("h6");
+  h6.innerText = string;
+  return h6;
+};
+let createAnswer = (elementAnswer, elementId) => {
+  console.log();
+  let answer = document.createElement("p");
+  answer.className = "helpMe";
+  answer.id = "help_" + elementId;
+
+  if (elementAnswer.length < 1) {
+    answer.innerText = "??";
+  } else {
+    answer.innerText = elementAnswer;
+  }
+
+  return answer;
+};
+
+let numberAppend = (...arr) => {
+  console.log(arr);
+  let number = arr[0];
+  let elements = arr.slice(1); // Create a shallow copy of the array starting from index 1
+  elements.forEach((element) => {
+    number.appendChild(element);
+  });
+  return number;
+};
+
+let createLabel = (attr, text) => {
+  let label = document.createElement("label");
+  label.setAttribute("for", attr);
+  label.innerHTML = text;
+
+  return label;
+};
+
+let createInput = (type, value, id, name) => {
+  let input = document.createElement("input");
+  input.type = type;
+  if (value !== null) {
+    input.value = value;
+  }
+  input.id = id;
+  input.name = name;
+  input.addEventListener("change", (e) => {
+    removeClass(e, type);
+  });
+  return input;
+};
+// ! questions making 1
+let whatis = (nb, element, tableName, verbe, image) => {
+  let questions = element.question.split(";");
+  let number = document.createElement("div");
+  let h3 = createH3(nb);
+
   let what = "";
   if (verbe != "") {
     what = "What ";
   }
-  let label = document.createElement("label");
-  label.setAttribute("for", tableName + "_" + element.id);
-  let questions;
+
+  let imgDiv;
   if (image == "image") {
-    questions = element.question.split(";");
     imgDiv = document.createElement("div");
     let img = document.createElement("img");
     img.src = questions[0];
     imgDiv.appendChild(img);
     //remove Picture from array
     questions.shift();
-    label.innerHTML = what + verbe + questions[0];
-  } else {
-    label.innerHTML = what + verbe + element.question;
   }
+  let q = questions[0].replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 
-  let input = document.createElement("input");
-  input.type = "text";
-  input.id = tableName + "_" + element.id;
-  input.name = tableName + "_" + element.id;
-  input.addEventListener("click", (e) => {
-    removeClass(e);
-  });
-  let answer = document.createElement("p");
-  if (element.answer.length < 1) {
-    answer.innerText = "??";
-  } else {
-    answer.innerText = element.answer;
-  }
+  let label = createLabel(
+    tableName + "_" + element.id,
+    what + verbe + questions[0].replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+  );
 
-  answer.className = "helpMe";
-  answer.id = "help_" + element.id;
+  let input = createInput(
+    "text",
+    null,
+    tableName + "_" + element.id,
+    tableName + "_" + element.id
+  );
 
-  let help = document.createElement("button");
-  let check = document.createElement("button");
-  let correct = document.createElement("button");
-  help.value = "help";
-  help.innerHTML = "help";
-  help.className = "help btn btn-primary mb-5 ms-1";
-  help.setAttribute("data-id", element.id);
-  help.setAttribute("data-table", tableName);
+  let answer = createAnswer(element.answer, element.id);
 
-  help.addEventListener("mousedown", (e) => {
-    answersShow(e);
-  });
-  help.addEventListener("mouseup", (e) => {
-    answersHide(e);
-  });
-  check.value = "check";
-  check.innerHTML = "check";
-  check.className = "check btn btn-primary  mb-5 ms-1";
-  correct.value = "correct";
-  correct.innerHTML = "correct";
-  correct.className = "correct btn btn-primary mb-5 ms-1";
-  correct.setAttribute("data-id", element.id);
-  correct.setAttribute("data-table", tableName);
-  correct.addEventListener("click", (e) => {
-    addAnswerToArrayAndDb(e, "text");
-  });
-  number.appendChild(h3);
-  number.appendChild(label);
+  //   let correct = createButton(text, className, value, clickHandler)
+  let help = createButtonHelp(element.id, tableName);
+  let check = createButtonCheck(element.id, tableName);
+  let correct = createButtonCorrect(element.id, tableName, "text");
   if (image == "image") {
-    number.appendChild(imgDiv);
+    numberAppend(
+      number,
+      h3,
+      label,
+      imgDiv,
+      input,
+      answer,
+      help,
+      check,
+      correct
+    );
+  } else {
+    numberAppend(number, h3, label, input, answer, help, check, correct);
   }
-  number.appendChild(input);
-  number.appendChild(answer);
-  number.appendChild(help);
-  number.appendChild(check);
-  number.appendChild(correct);
 
   start.appendChild(number);
 };
 // ! questions making 2
-let explain = (nb, element, tableName) => {
+let explain = (nb, element, tableName, image) => {
+  let questions = element.question.split(";");
   let number = document.createElement("div");
-  let h3 = document.createElement("h3");
-  h3.innerText = "question " + nb;
 
-  let label = document.createElement("label");
-  label.setAttribute("for", tableName + "_" + element.id);
-  label.innerHTML = "Explain " + element.question + "! ";
-  let input = document.createElement("input");
-  input.type = "text";
-  input.id = tableName + "_" + element.id;
-  input.name = tableName + "_" + element.id;
-  input.addEventListener("click", (e) => {
-    removeClass(e);
-  });
-  let answer = document.createElement("p");
-  console.log("element.answer: " + element.answer);
-  if (element.answer.length < 1) {
-    answer.innerText = "??";
-  } else {
-    answer.innerText = element.answer.join("");
+  let h3 = createH3(nb);
+
+  let imgDiv;
+  if (image == "image") {
+    imgDiv = document.createElement("div");
+    let img = document.createElement("img");
+    img.src = questions[0];
+    imgDiv.appendChild(img);
+    //remove Picture from array
+    questions.shift();
+    numberAppend(number, imgDiv);
   }
-  answer.className = "helpMe";
-  answer.id = "help_" + element.id;
-  let help = document.createElement("button");
-  let check = document.createElement("button");
-  let correct = document.createElement("button");
-  help.value = "help";
-  help.innerHTML = "help";
-  help.className = "help btn btn-primary mb-5 ms-1";
-  help.setAttribute("data-id", element.id);
-  help.setAttribute("data-table", tableName);
-  help.addEventListener("mousedown", (e) => {
-    answersShow(e);
-  });
-  help.addEventListener("mouseup", (e) => {
-    answersHide(e);
-  });
-  check.value = "check";
-  check.innerHTML = "check";
-  check.className = "check btn btn-primary  mb-5 ms-1";
-  correct.value = "correct";
-  correct.innerHTML = "correct";
 
-  correct.className = "correct btn btn-primary mb-5 ms-1";
-  correct.setAttribute("data-id", element.id);
-  correct.setAttribute("data-table", tableName);
-  correct.addEventListener("click", (e) => {
-    addAnswerToArrayAndDb(e, "text");
-  });
+  let label = createLabel(
+    tableName + "_" + element.id,
+    "Explain " +
+      questions[0].replaceAll("<", "&lt;").replaceAll(">", "&gt;") +
+      "! "
+  );
 
-  number.appendChild(h3);
-  number.appendChild(label);
-  number.appendChild(input);
-  number.appendChild(answer);
-  number.appendChild(help);
-  number.appendChild(check);
-  number.appendChild(correct);
+  let input = createInput(
+    "text",
+    null,
+    tableName + "_" + element.id,
+    tableName + "_" + element.id
+  );
+
+  let shortAnswer = "";
+  if (element.answer.length < 1) {
+    shortAnswer = "??";
+  } else {
+    shortAnswer = element.answer.join("");
+  }
+
+  let answer = createAnswer(shortAnswer, element.id);
+  let help = createButtonHelp(element.id, tableName);
+  let check = createButtonCheck(element.id, tableName);
+  let correct = createButtonCorrect(element.id, tableName, "text");
+
+  numberAppend(number, h3, label, input, answer, help, check, correct);
 
   start.appendChild(number);
 };
 // ! questions making 3
 let multiSingle = (nb, element, tableName, image) => {
   let questions = element.question.split(";");
-  let number = document.createElement("div");
-  number.id = tableName + "_" + element.id;
-  number.className = "radio";
+  let number = createNumber("radio", element.id, tableName);
 
-  number.addEventListener("click", (e) => {
-    removeClass(e);
-  });
-  let h3 = document.createElement("h3");
-  h3.innerText = "question " + nb;
+  let h3 = createH3(nb);
+  let h6 = createH6(questions[0]);
 
-  let h6 = document.createElement("h6");
   let imgDiv;
   if (image == "image") {
     imgDiv = document.createElement("div");
@@ -259,9 +327,8 @@ let multiSingle = (nb, element, tableName, image) => {
     questions.shift();
   }
 
-  h6.innerText = questions[0];
-  number.appendChild(h3);
-  number.appendChild(h6);
+  numberAppend(number, h3, h6);
+
   if (image == "image") {
     number.appendChild(imgDiv);
   }
@@ -269,146 +336,67 @@ let multiSingle = (nb, element, tableName, image) => {
   let nbRadio = 0;
   questions.forEach((el) => {
     const br = document.createElement("br");
-    let label = document.createElement("label");
-    label.setAttribute("for", tableName + "_" + element.id + "_" + nbRadio);
-    label.innerHTML = el;
-    let input = document.createElement("input");
-    input.type = "radio";
-    input.value = el;
-    input.id = tableName + "_" + element.id + "_" + nbRadio;
-    input.name = tableName + "_" + element.id;
-    input.addEventListener("change", (e) => {
-      removeClass(e, "radio");
-    });
-    number.appendChild(input);
-    number.appendChild(label);
-    number.appendChild(br);
+    let label = createLabel(
+      tableName + "_" + element.id + "_" + nbRadio,
+      el.replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+    );
+
+    let input = createInput(
+      "radio",
+      el,
+      tableName + "_" + element.id + "_" + nbRadio,
+      tableName + "_" + element.id
+    );
+
+    numberAppend(number, input, label, br);
     nbRadio++;
   });
 
-  let answer = document.createElement("p");
-
-  if (element.answer.length < 1) {
-    answer.innerText = "??";
-  } else {
-    answer.innerText = element.answer;
-  }
-
-  answer.className = "helpMe";
-  answer.id = "help_" + element.id;
-  let help = document.createElement("button");
-  let check = document.createElement("button");
-  let correct = document.createElement("button");
-  help.value = "help";
-  help.innerHTML = "help";
-  help.className = "help btn btn-primary mb-5 ms-1";
-  help.setAttribute("data-id", element.id);
-  help.setAttribute("data-table", tableName);
-  help.addEventListener("mousedown", (e) => {
-    answersShow(e);
-  });
-  help.addEventListener("mouseup", (e) => {
-    answersHide(e);
-  });
-  check.value = "check";
-  check.innerHTML = "check";
-  check.className = "check btn btn-primary  mb-5 ms-1";
-
-  correct.value = "correct";
-  correct.innerHTML = "correct";
-  correct.className = "correct btn btn-primary mb-5 ms-1";
-  correct.setAttribute("data-id", element.id);
-  correct.setAttribute("data-table", tableName);
-  correct.addEventListener("click", (e) => {
-    addAnswerToArrayAndDb(e, "radio");
-  });
-
-  number.appendChild(answer);
-  number.appendChild(help);
-  number.appendChild(check);
-  number.appendChild(correct);
+  let answer = createAnswer(element.answer, element.id);
+  let help = createButtonHelp(element.id, tableName);
+  let check = createButtonCheck(element.id, tableName);
+  let correct = createButtonCorrect(element.id, tableName, "radio");
+  numberAppend(number, answer, help, check, correct);
 
   start.appendChild(number);
 };
 // ! questions making 4
 let multiMulti = (nb, element, tableName) => {
   let questions = element.question.split(";");
-  let number = document.createElement("div");
-  number.id = tableName + "_" + element.id;
-  number.className = "checkbox";
 
-  number.addEventListener("click", (e) => {
-    removeClass(e);
-  });
-  let h3 = document.createElement("h3");
-  h3.innerText = "question " + nb;
+  let number = createNumber("checkbox", element.id, tableName);
 
-  let h6 = document.createElement("h6");
-  h6.innerText = questions[0];
-  number.appendChild(h3);
-  number.appendChild(h6);
+  let h3 = createH3(nb);
+  let h6 = createH6(questions[0]);
+
+  numberAppend(number, h3, h6);
+
   questions.shift();
   let nbCheckbox = 0;
   questions.forEach((el) => {
     const br = document.createElement("br");
-    let label = document.createElement("label");
-    label.setAttribute("for", tableName + "_" + element.id + "_" + nbCheckbox);
-    label.innerHTML = el;
-    let input = document.createElement("input");
-    input.type = "checkbox";
-    input.value = el;
-    input.id = tableName + "_" + element.id + "_" + nbCheckbox;
-    input.name = tableName + "_" + element.id;
-    input.addEventListener("change", (e) => {
-      removeClass(e, "checkbox");
-    });
-    number.appendChild(input);
-    number.appendChild(label);
-    number.appendChild(br);
+    let label = createLabel(
+      tableName + "_" + element.id + "_" + nbCheckbox,
+      el.replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+    );
+    let input = createInput(
+      "checkbox",
+      el,
+      tableName + "_" + element.id + "_" + nbCheckbox,
+      tableName + "_" + element.id
+    );
+
+    numberAppend(number, input, label, br);
+
     nbCheckbox++;
   });
 
-  let answer = document.createElement("p");
+  let answer = createAnswer(element.answer, element.id);
 
-  if (element.answer.length < 1) {
-    answer.innerText = "??";
-  } else {
-    answer.innerText = element.answer;
-  }
-
-  answer.className = "helpMe";
-  answer.id = "help_" + element.id;
-  let help = document.createElement("button");
-  let check = document.createElement("button");
-  let correct = document.createElement("button");
-  help.value = "help";
-  help.innerHTML = "help";
-  help.className = "help btn btn-primary mb-5 ms-1";
-  help.setAttribute("data-id", element.id);
-  help.setAttribute("data-table", tableName);
-  help.addEventListener("mousedown", (e) => {
-    answersShow(e);
-  });
-  help.addEventListener("mouseup", (e) => {
-    answersHide(e);
-  });
-  check.value = "check";
-  check.innerHTML = "check";
-  check.className = "check btn btn-primary  mb-5 ms-1";
-
-  correct.value = "correct";
-  correct.innerHTML = "correct";
-  correct.className = "correct btn btn-primary mb-5 ms-1";
-  correct.setAttribute("data-id", element.id);
-  correct.setAttribute("data-table", tableName);
-  correct.addEventListener("click", (e) => {
-    addAnswerToArrayAndDb(e, "checkbox");
-  });
-
-  number.appendChild(answer);
-  number.appendChild(help);
-  number.appendChild(check);
-  number.appendChild(correct);
+  let help = createButtonHelp(element.id, tableName);
+  let check = createButtonCheck(element.id, tableName);
+  let correct = createButtonCorrect(element.id, tableName, "checkbox");
+  numberAppend(number, answer, help, check, correct);
 
   start.appendChild(number);
 };
@@ -416,19 +404,26 @@ let multiMulti = (nb, element, tableName) => {
 // ! questions making 5
 let sortOut = (nb, element, tableName) => {
   let number = document.createElement("div");
-  let h3 = document.createElement("h3");
-  h3.innerText = "question " + nb;
 
-  let label = document.createElement("label");
-  label.setAttribute("for", tableName + "_" + element.id);
-  label.innerHTML = "Sort out " + element.question;
+  let h3 = createH3(nb);
+
+  let label = createLabel(
+    tableName + "_" + element.id,
+    "Sort out " +
+      element.question
+        .substring(0, element.question.indexOf(";"))
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+  );
+
   let div = document.createElement("div");
   div.className = "drag";
   div.id = tableName + "_" + element.id;
   div.addEventListener("click", (e) => {
     removeClass(e);
   });
-  let allValues = element.question.split(" ");
+  let allValues = element.question.split(";");
+  allValues.shift();
   const shuffledArray = allValues.sort((a, b) => 0.5 - Math.random());
   shuffledArray.forEach((element) => {
     let p = document.createElement("p");
@@ -438,57 +433,18 @@ let sortOut = (nb, element, tableName) => {
 
     div.appendChild(p);
   });
+  let shortAnswer = element.question
+    .substring(element.question.indexOf(";"), element.question.length)
+    .replaceAll(";", " ");
+  let answer = createAnswer(shortAnswer, element.id);
 
-  let answer = document.createElement("p");
-  answer.innerText = element.question;
-  answer.className = "helpMe";
-  answer.id = "help_" + element.id;
-  let help = document.createElement("button");
-  let check = document.createElement("button");
-  let correct = document.createElement("button");
-  help.value = "help";
-  help.innerHTML = "help";
-  help.className = "help btn btn-primary mb-5 ms-1";
-  help.setAttribute("data-id", element.id);
-  help.setAttribute("data-table", tableName);
-  help.addEventListener("mousedown", (e) => {
-    answersShow(e);
-  });
-  help.addEventListener("mouseup", (e) => {
-    answersHide(e);
-  });
-  check.value = "check";
-  check.innerHTML = "check";
-  check.className = "check btn btn-primary  mb-5 ms-1";
+  let help = createButtonHelp(element.id, tableName);
+  let check = createButtonCheck(element.id, tableName);
+  let correct = createButtonCorrect(element.id, tableName, "drag");
 
-  correct.value = "correct";
-  correct.innerHTML = "correct";
-  correct.className = "correct btn btn-primary mb-5 ms-1";
-  correct.setAttribute("data-id", element.id);
-  correct.setAttribute("data-table", tableName);
-  correct.addEventListener("click", (e) => {
-    addAnswerToArrayAndDb(e, "drag");
-  });
-
-  number.appendChild(h3);
-  number.appendChild(label);
-  number.appendChild(div);
-  number.appendChild(answer);
-  number.appendChild(help);
-  number.appendChild(check);
-  number.appendChild(correct);
+  numberAppend(number, h3, label, div, answer, help, check, correct);
 
   start.appendChild(number);
-
-  // div class="drag" id="question01">
-  //       <p class="draggable" draggable="true">1</p>
-  //       <p class="draggable" draggable="true">2</p>
-  //       <p class="draggable" draggable="true">7</p>
-  //       <p class="draggable" draggable="true">3</p>
-  //       <p class="draggable" draggable="true">4</p>
-  //       <p class="draggable" draggable="true">5</p>
-  //       <p class="draggable" draggable="true">6</p>
-  //     </div>
 
   const draggables = document.querySelectorAll(".draggable");
   const drags = document.querySelectorAll(".drag");
@@ -539,62 +495,29 @@ let addAnswerToArrayAndDb = (e, input) => {
 // ! questions making xx
 let abv = (nb, element, tableName) => {
   let number = document.createElement("div");
-  let h3 = document.createElement("h3");
-  h3.innerText = "question " + nb;
 
-  let label = document.createElement("label");
-  label.setAttribute("for", tableName + "_" + element.id);
-  label.innerHTML = "Wofür steht " + element.question + "? ";
-  let input = document.createElement("input");
-  input.type = "text";
-  input.id = tableName + "_" + element.id;
-  input.name = tableName + "_" + element.id;
-  input.addEventListener("click", (e) => {
-    removeClass(e);
-  });
-  let answer = document.createElement("p");
-  if (element.answer.length < 1) {
-    answer.innerText = "??";
-  } else {
-    answer.innerText = element.answer;
-  }
-  answer.className = "helpMe";
-  answer.id = "help_" + element.id;
-  let help = document.createElement("button");
-  let check = document.createElement("button");
-  let correct = document.createElement("button");
-  help.value = "help";
-  help.innerHTML = "help";
-  help.className = "help btn btn-primary mb-5 ms-1";
-  help.setAttribute("data-id", element.id);
-  help.setAttribute("data-table", tableName);
+  let h3 = createH3(nb);
 
-  help.addEventListener("mousedown", (e) => {
-    answersShow(e);
-  });
-  help.addEventListener("mouseup", (e) => {
-    answersHide(e);
-  });
-  check.value = "check";
-  check.innerHTML = "check";
-  check.className = "check btn btn-primary  mb-5 ms-1";
-  //---
-  correct.value = "correct";
-  correct.innerHTML = "correct";
-  correct.className = "correct btn btn-primary mb-5 ms-1";
-  correct.setAttribute("data-id", element.id);
-  correct.setAttribute("data-table", tableName);
-  correct.addEventListener("click", (e) => {
-    addAnswerToArrayAndDb(e, "text");
-  });
+  let label = createLabel(
+    tableName + "_" + element.id,
+    "Wofür steht " +
+      element.question.replaceAll("<", "&lt;").replaceAll(">", "&gt;") +
+      "? "
+  );
+  let input = createInput(
+    "text",
+    null,
+    tableName + "_" + element.id,
+    tableName + "_" + element.id
+  );
 
-  number.appendChild(h3);
-  number.appendChild(label);
-  number.appendChild(input);
-  number.appendChild(answer);
-  number.appendChild(help);
-  number.appendChild(check);
-  number.appendChild(correct);
+  let answer = createAnswer(element.answer, element.id);
+
+  let help = createButtonHelp(element.id, tableName);
+  let check = createButtonCheck(element.id, tableName);
+  let correct = createButtonCorrect(element.id, tableName, "text");
+
+  numberAppend(number, h3, label, input, answer, help, check, correct);
 
   start.appendChild(number);
 };
@@ -661,6 +584,11 @@ let removeClass = (e, radioCheckBox) => {
 
   id.classList.remove("wrong");
   id.classList.remove("right");
+};
+
+let checkThis = (e) => {
+  let id = e.target.getAttribute("data-id");
+  console.log(id);
 };
 
 // ! hide answersUser
@@ -852,7 +780,8 @@ let colorAnswers = () => {
       let nb = answersDb[key][key2].id;
       let klass = answersDb[key][key2].class;
       let id = document.getElementById(table + "_" + nb);
-
+      console.log(";;;;;;;;;;;;;;;;;;;;;;;;");
+      console.log(id);
       id.classList.remove("wrong");
       id.classList.remove("right");
       id.classList.add(klass);
@@ -892,14 +821,7 @@ nav_items.forEach((element) => {
   });
 });
 
-
-let loadMenu = () =>
-{ 
-  
-  
-}
-
-
+let loadMenu = () => {};
 
 // Set the variable to be sent
 
