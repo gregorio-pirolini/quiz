@@ -1,8 +1,25 @@
 <?php
 include 'connect.php';
 
+ $_POST = json_decode(file_get_contents('php://input'), true);
+ if(isset($_POST)){
+    $dataClass= $_POST['dataClass'];
+ }
+ if(isset($_POST)){
+   $all= $_POST['all'];
+}
  
-;
+if ($all==false){
+
+
+      // $dataClass= "wiso4";
+  // Do something with the dataClass variable
+
+// !has player already played?
+// !no
+// $sql="SELECT q.* FROM questions q 
+// JOIN subject s ON q.subjectId = s.id WHERE s.name = '$dataClass'
+// AND q.status > 0";
 $sql="SELECT q.*, a.answers as answer
 FROM questions q 
 JOIN subject s ON q.subjectId = s.id
@@ -15,7 +32,7 @@ $myValues=[];
 foreach ($stmt as $row) {
 array_push($myValues,  $row);
 }
-
+}
 $myValuesAnswersAsArray=[];
 
 
@@ -74,9 +91,9 @@ $j++) {
 
    
   
-// echo "<pre>";
-// var_dump($myValuesAnswersAsArray);
-// echo "<pre>";
+//   echo "<pre>";
+//   var_dump($myValuesAnswersAsArray);
+//   echo "<pre>";
 
 echo json_encode($myValuesAnswersAsArray);
 

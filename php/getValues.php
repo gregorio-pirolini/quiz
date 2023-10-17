@@ -1,94 +1,84 @@
 <?php
 include 'connect.php';
+include 'functions.php';
+$_POST = json_decode(file_get_contents('php://input'), true);
 
- $_POST = json_decode(file_get_contents('php://input'), true);
- if(isset($_POST)){
-    $dataClass= $_POST['dataClass'];
- }
+if (isset($_POST['dataClass'])) {
+    $dataClass = $_POST['dataClass'];
+}
 
-      // $dataClass= "wiso4";
-  // Do something with the dataClass variable
+if (isset($_POST['all']) && $_POST['all'] === false) {
 
-// !has player already played?
-// !no
-// $sql="SELECT q.* FROM questions q 
-// JOIN subject s ON q.subjectId = s.id WHERE s.name = '$dataClass'
-// AND q.status > 0";
-$sql="SELECT q.*, a.answers as answer
+
+    // Query to fetch questions and their answers
+    $sql = "SELECT q.id, q.question, a.answers, t.name as typeOfQuestion , s.name 
 FROM questions q 
-JOIN subject s ON q.subjectId = s.id
-JOIN answers a ON q.id = a.questionid  
-WHERE s.name = '$dataClass' AND q.status >0
-AND a.status > 0";
-$stmt = $conn->query($sql);
-$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-$myValues=[];
-foreach ($stmt as $row) {
-array_push($myValues,  $row);
+JOIN questions_subject qs 
+ON  q.id = qs.questionid 
+JOIN answers a 
+ON q.id = a.questionid 
+JOIN typeOfQuestions t 
+ON q.typeOfQuestionId = t.id 
+JOIN subject s ON qs.subjectid = s.id 
+WHERE s.name = :dataClass 
+AND q.status > 0 
+AND a.status > 0 
+ORDER BY q.id asc";
+
+
+
+} else if (isset($_POST['all']) && $_POST['all'] === true) {
+
+    // Query to fetch questions and their answers
+    $sql = "SELECT q.id, q.question, a.answers, t.name as typeOfQuestion , s.name 
+FROM questions q 
+JOIN questions_subject qs 
+ON  q.id = qs.questionid 
+JOIN answers a 
+ON q.id = a.questionid 
+JOIN typeOfQuestions t 
+ON q.typeOfQuestionId = t.id 
+JOIN subject s 
+ON qs.subjectid = s.id 
+JOIN fach f 
+ON  s.fachid = f.id 
+WHERE f.name = :dataClass  
+AND q.status > 0 
+AND a.status > 0 
+ORDER BY q.id asc";
+
+} else {
+    echo json_encode(['error' => 'Invalid request']);
 }
 
-$myValuesAnswersAsArray=[];
+$stmt = $conn->prepare($sql);
+$stmt->bindParam(':dataClass', $dataClass, PDO::PARAM_STR);
+$stmt->execute();
 
+$myValues = [];
+$currentQuestionId = null;
 
-// var_dump($myValues);
-
-for ($i=0;$i<count($myValues);$i++) {
-   // echo " i: ".$i. " loop 1<br>";
-    $alreadyIn=false;
-if($i<1){
-   //   echo "set firts row ".$myValues[$i]['id']."<br>";
-      $add = $myValues[$i]['answer'];
-      $myValuesAnswersAsArray[$i]['id']=$myValues[$i]['id'];
-      $myValuesAnswersAsArray[$i]['question']=$myValues[$i]['question'];
-      $myValuesAnswersAsArray[$i]['typeOfQuestion']=$myValues[$i]['typeOfQuestion'];
-      $myValuesAnswersAsArray[$i]['subjectId']=$myValues[$i]['subjectId'];
-      $myValuesAnswersAsArray[$i]['answer']=[];
-      array_push($myValuesAnswersAsArray[$i]['answer'], $add);
-continue;
-   }
-  
-   // echo "will stop at ". count($myValuesAnswersAsArray);
-for ($j=0;
-$j<count($myValuesAnswersAsArray);
-$j++) {
-   // echo "<br>i:    ".$i."..............j:    ".$j."<br>";
-   if ($myValuesAnswersAsArray[$j]['id']==$myValues[$i]['id']) { 
-      $alreadyIn=true;
-      $index=$j;
-       
-   }else{
-      $alreadyIn=false;
-      $index=$j+1;
-   }
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    if ($currentQuestionId !== $row['id']) {
+        // New question encountered, initialize the question entry
+        $currentQuestionId = $row['id'];
+        $questionEntry = [
+            'id' => $row['id'],
+            'question' => $row['question'],
+            'typeOfQuestion' => $row['typeOfQuestion'],
+            // 'subjectId' => $row['subjectId'],
+            'answer' => putBrBack([$row['answers']]),
+            // Initialize with the first answer
+        ];
+        $myValues[] = $questionEntry;
+    } else {
+        // Existing question, append the answer
+        $myValues[count($myValues) - 1]['answer'][] = putBrBack($row['answers']);
+    }
 }
 
- if($alreadyIn==true){
-   $add = $myValues[$i]['answer'];
-  array_push($myValuesAnswersAsArray[$index]['answer'], $add);
-//   echo" found you 見つけました";
- }else{
-   $add = $myValues[$i]['answer'];
-   $myValuesAnswersAsArray[ $index]['id']=$myValues[$i]['id'];
-   $myValuesAnswersAsArray[ $index]['question']=$myValues[$i]['question'];
-   $myValuesAnswersAsArray[ $index]['typeOfQuestion']=$myValues[$i]['typeOfQuestion'];
-   $myValuesAnswersAsArray[ $index]['subjectId']=$myValues[$i]['subjectId'];
-   $myValuesAnswersAsArray[ $index]['answer']=[];
-   array_push($myValuesAnswersAsArray[ $index]['answer'], "$add");
-}
-  }
-      
-     
-// $index=$j
- 
- 
+// Encode the result as JSON
+echo json_encode($myValues);
 
-
-   
-  
-// echo "<pre>";
-// var_dump($myValuesAnswersAsArray);
-// echo "<pre>";
-
-echo json_encode($myValuesAnswersAsArray);
-
+// Close the database connection
 $conn = null;

@@ -69,4 +69,38 @@ input {
 
 .highlighted {
   background-color: yellow;
+}
+
+.new label,
+.link label {
+  display: inline;
+  cursor: pointer;
+}
+.new checkbox,
+.link checkbox {
+  cursor: pointer;
+}
+.new textarea,
+.link textarea {
+  width: 100%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+}
+.new .myLabel,
+.link .myLabel {
+  color: black; /* Default color when unchecked */
+}
+.new .myLabel:hover,
+.link .myLabel:hover {
+  pointer-events: cursor;
+}
+.new .myCheckbox:checked + .myLabel,
+.link .myCheckbox:checked + .myLabel {
+  color: red; /* Change color when checkbox is checked */
 }/*# sourceMappingURL=style.css.map */
