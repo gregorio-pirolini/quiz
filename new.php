@@ -1,76 +1,101 @@
 <?php include 'header-admin.php'; ?>
-
+<?php include 'nav-admin.php'; ?>
 <h1 id="hello">Quizz!!</h1>
 <h2>Upload Question</h2>
 <div class="row">
   <div class="col-sm mb-3 ">
     <div id="page" class="new">
-      <h3>
-        type Of question
-      </h3>
+      <form action="" id="myForm" class="row needs-validation" novalidate>
+        <div class="col-sm-12 mt-1">
+          <h3>
+            type Of question
+          </h3>
+          <fieldset id="typeOfQuestions">
+          </fieldset>
+          <!-- <div class="personal-feedback">personal message</div>
+          <div class="valid-feedback">looks good!</div>
+          <div class="invalid-feedback">please check def</div>
+          <small id="radioQuestionsHelp" class="form-text text-muted">Select type of question
+            else.</small> -->
+        </div>
+        <div class="col-sm-12 mt-1">
+          <h3>
+            Fach
+          </h3>
+          <fieldset id="fach">
+          </fieldset>
+        </div>
+        <div class="col-sm-12 mt-1">
+          <div id="addFachs">
+              <!-- <label for="addMoreTags">add more tags:</label>
+          <input id="addMoreTags" type="text" name="addMoreTags" />
+          <button id="addMoreTagsButton" class="btn btn-primary mt-2">Upload Me</button> -->
+          </div>
+        </div>
+        <div class="col-sm-12 mt-1">
+          <h3>
+            Subject
+          </h3>
+          <fieldset id="subject"></fieldset>
+        </div>
+        <div class="col-sm-12 mt-1">
+          <div id="addSubs">
+          <!-- <label for="addMoreTags">add more tags:</label>
+          <input id="addMoreTags" type="text" name="addMoreTags" />
+          <button id="addMoreTagsButton" class="btn btn-primary mt-2">Upload Me</button> -->
+          </div>
+        </div>
+        <div class="col-sm-12 mt-1">
+          <h3>
+            Tags
+          </h3>
+          <fieldset id="tags">
+          </fieldset>
+        </div>
+        <div class="col-sm-12 mt-1">
+          <div id="addTags">
+              <!-- <label for="addMoreTags">add more tags:</label>
+          <input id="addMoreTags" type="text" name="addMoreTags" />
+          <button id="addMoreTagsButton" class="btn btn-primary mt-2">Upload Me</button> -->
+          </div>
+        </div>
+        
+        <div class="col-sm-12 mt-1">
+          <div id="uploadQuestion1Container">
+          </div>
+        </div>
+        <div class="col-sm-12 mt-1">
+          <div id="uploadQuestion2Container">
+          </div>
+        </div>
+        <div class="col-sm-12 mt-1">
+          <div id="uploadQuestion3Container">
+          </div>
+        </div>
+        <div class="col-sm-12 mt-1">
+          <div id="imageContainer">
+          </div>
+          <p id="responseImg">response img: <span id="phpSaysimage"></span></p>
+          <div id="imagePreview" class="mb-3"><span class="preview">image preview:</span>
+          <img src="img/download.png" alt="the Picture">
+          </div>
+        </div>
 
-      <div id="typeOfQuestions">
-
-      </div>
-
-
-      <h3>
-        Fach
-      </h3>
-      <div id="fach">
-
-      </div>
-      <h3>
-        Subject
-      </h3>
-      <div id="subject">
-
-      </div>
-      <h3>
-        Tags
-      </h3>
-      <div id="tags">
-
-      </div>
-      <div id="addTags">
-        <label for="addMoreTags">add more tags:</label>
-        <input id="addMoreTags" type="text" name="addMoreTags" />
-        <button id="addMoreTagsButton" class="btn btn-primary mt-2">Upload Me</button>
-      </div>
-      <hr>
-      <label for="uploadQuestion1">Upload Question:</label>
-      <textarea id="uploadQuestion1" name="uploadQuestion1" rows="4" cols="50"></textarea>
-
-      <label for="uploadQuestion2">Upload Answers:</label>
-      <textarea id="uploadQuestion2" name="uploadQuestion2" rows="4" cols="50"></textarea>
-      <button id="formatQuestion2" class="btn btn-primary mb-2 mt-2">format me</button>
-      <br>
-      <label for="uploadQuestion3">Upload right Answers:</label>
-      <textarea id="uploadQuestion3" name="uploadQuestion3" rows="4" cols="50"></textarea>
-      <button id="addBr" class="btn btn-warning mt-2 mb-2">Add BR</button>
-      <button id="delAnswer" class="btn btn-info mt-2 mb-2">del answer</button>
-    </div>
-    <label class="form-label" for="customFile"> 1 Upload one file:</label>
-    <input id="fileupload" class="form-control" type="file" name="fileupload" />
-    <button id="uploadImg" class="btn btn-secondary mt-2 mb-2">Upload img</button>
-    <button id="delImg" class="btn btn-secondary mt-2 mb-2">delete img</button>
-  </div>
+        <div class="alert alert-success d-none " role="alert" id="success-alert">
+          Your form was successfully submitted! Thank you.
+        </div>
+        <div class="alert alert-danger d-none" role="alert" id="error-alert">
+          An error occurred while submitting the form. Please try again.
+        </div>
 
 
-  <p id="responseImg">response img: <span id="phpSaysimage"></span></p>
-
-  <div class="row">
-    <div class="col-sm">
-      <button id="uploadSingleButton" class="btn btn-primary">Upload Me</button>
-    </div>
-  </div>
-  <p id="response">response All: <span id="phpSaysSingle"> * span * </span></p>
-</div>
-</div>
-
-
-
-
+        <button id="uploadSingleButton" class="btn btn-primary">Upload Me</button>
+        <p id="response">response All: <span id="phpSaysSingle"> * span * </span></p>
+      </form><!-- form  -->
+    </div><!-- id new  -->
+  </div><!-- class  -->
+</div><!-- row  -->
+<!-- include footer -->
 
 
 <?php include 'footer.php'; ?>

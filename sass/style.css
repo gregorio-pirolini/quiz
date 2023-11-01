@@ -103,4 +103,25 @@ input {
 .new .myCheckbox:checked + .myLabel,
 .link .myCheckbox:checked + .myLabel {
   color: red; /* Change color when checkbox is checked */
+}
+.new .form-text,
+.link .form-text {
+  display: grid;
+}
+.new #imagePreview,
+.link #imagePreview {
+  max-width: 250px;
+  height: auto;
+}
+.new .invalid-feedback,
+.new .greg-invalid-feedback,
+.link .invalid-feedback,
+.link .greg-invalid-feedback {
+  color: red;
+}
+.new .valid-feedback,
+.new .greg-valid-feedback,
+.link .valid-feedback,
+.link .greg-valid-feedback {
+  color: green;
 }/*# sourceMappingURL=style.css.map */

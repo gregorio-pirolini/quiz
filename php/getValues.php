@@ -1,4 +1,5 @@
 <?php
+
 include 'connect.php';
 include 'functions.php';
 $_POST = json_decode(file_get_contents('php://input'), true);
@@ -27,7 +28,7 @@ ORDER BY q.id asc";
 
 
 
-} else if (isset($_POST['all']) && $_POST['all'] === true) {
+} elseif (isset($_POST['all']) && $_POST['all'] === true) {
 
     // Query to fetch questions and their answers
     $sql = "SELECT q.id, q.question, a.answers, t.name as typeOfQuestion , s.name 
@@ -64,7 +65,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $currentQuestionId = $row['id'];
         $questionEntry = [
             'id' => $row['id'],
-            'question' => $row['question'],
+            'question' => putBrBack($row['question']),
             'typeOfQuestion' => $row['typeOfQuestion'],
             // 'subjectId' => $row['subjectId'],
             'answer' => putBrBack([$row['answers']]),

@@ -1,4 +1,5 @@
 <?php include 'header-admin.php'; ?>
+<?php include 'nav-admin.php'; ?>
 
 <h1 id="hello">Quizz!!</h1>
 <h2>Upload Questions</h2>

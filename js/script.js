@@ -144,7 +144,8 @@ let createH3 = (nb) => {
 };
 let createH6 = (string) => {
   let h6 = document.createElement("h6");
-  h6.innerText = string;
+  h6.innerHTML = string.replaceAll("\n", "<br>");
+  console.log(string);
   return h6;
 };
 let createAnswer = (elementAnswer, elementId) => {
@@ -175,7 +176,7 @@ let numberAppend = (...arr) => {
 let createLabel = (attr, text) => {
   let label = document.createElement("label");
   label.setAttribute("for", attr);
-  text = text.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+
   // console.log(text);
   label.innerText = text;
 
@@ -315,9 +316,7 @@ let explain = (nb, element, tableName, image) => {
 
   let label = createLabel(
     tableName + "_" + element.id,
-    "Explain " +
-      questions[0].replaceAll("<", "&lt;").replaceAll(">", "&gt;") +
-      "! "
+    "Explain " + questions[0] + "! "
   );
 
   let input = createInput(
@@ -412,10 +411,7 @@ let multiSingle = (nb, element, tableName, image) => {
   let nbRadio = 0;
   questions.forEach((el) => {
     const br = document.createElement("br");
-    let label = createLabel(
-      tableName + "_" + element.id + "_" + nbRadio,
-      el.replaceAll("<", "&lt;").replaceAll(">", "&gt;")
-    );
+    let label = createLabel(tableName + "_" + element.id + "_" + nbRadio, el);
 
     let input = createInput(
       "radio",
@@ -508,7 +504,7 @@ let multiMulti = (nb, element, tableName, image) => {
     const br = document.createElement("br");
     let label = createLabel(
       tableName + "_" + element.id + "_" + nbCheckbox,
-      el.replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+      el
     );
     let input = createInput(
       "checkbox",
@@ -602,7 +598,7 @@ let sortOut = (nb, element, tableName, image) => {
 
   let label = createLabel(
     tableName + "_" + element.id,
-    "Sort out! " + questions[0].replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+    "Sort out! " + questions[0]
   );
   number.append(label);
   questions.shift();
@@ -733,9 +729,7 @@ let abv = (nb, element, tableName) => {
 
   let label = createLabel(
     tableName + "_" + element.id,
-    "Wofür steht " +
-      element.question.replaceAll("<", "&lt;").replaceAll(">", "&gt;") +
-      "? "
+    "Wofür steht " + element.question + "? "
   );
   let input = createInput(
     "text",
@@ -1252,7 +1246,7 @@ loadMenu();
 // Set the variable to be sent
 
 // START ING HERRE
-getValues("php/getValues.php", "IoT", null, "Internet of Things");
+getValues("php/getValues.php", "wiso 14", null, "Finanzierung");
 home.style.display = "block";
 
 // const dropdownItem = document.getElementsByClassName("dropdown-item");

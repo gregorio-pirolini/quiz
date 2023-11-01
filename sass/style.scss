@@ -100,4 +100,21 @@ input {
   .myCheckbox:checked + .myLabel {
     color: red; /* Change color when checkbox is checked */
   }
+
+  .form-text {
+    display: grid;
+  }
+  #imagePreview {
+    max-width: 250px;
+    height: auto;
+  }
+
+  .invalid-feedback,
+  .greg-invalid-feedback {
+    color: red;
+  }
+  .valid-feedback,
+  .greg-valid-feedback {
+    color: green;
+  }
 }

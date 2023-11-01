@@ -1,25 +1,51 @@
 <?php
-/* Get the name of the uploaded file */
-$filename = $_FILES['file']['name'];
 
-/* Choose where to save the uploaded file */
-$random = time();
-$location = "../img/" . $random . preg_replace('/\s|\.(?=.*\.)/', '', $filename);
+try {
+    // Check if a file was uploaded
+    if (isset($_FILES['file'])) {
+        $file = $_FILES['file'];
 
+        // Check for file upload errors
+        if ($file['error'] === UPLOAD_ERR_OK) {
+            $filename = $file['name'];
 
-/* Save the uploaded file to the local filesystem */
-if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
+            // Check if the uploaded file is an image
+            $imageInfo = getimagesize($file['tmp_name']);
+            if ($imageInfo === false) {
+                throw new Exception("Uploaded file is not a valid image.");
+            }
 
-  $text = 'this was a succes Greg! 成功 seikō';
-} else {
-  $text = 'this was a Failure Greg! 不成功';
+            // Generate a unique filename
+            $random = uniqid();
+            $extension = pathinfo($filename, PATHINFO_EXTENSION);
+            $newFilename = $random . "." . $extension;
+
+            $location = "../img/" . $newFilename;
+            $src = substr($location, 3);
+
+            // Move the uploaded file to the destination
+            if (move_uploaded_file($file['tmp_name'], $location)) {
+                $response = [
+                    "success" => true,
+                    "message" => "Picture was uploaded",
+                    "location" => $location,
+                    "src" => $src
+                ];
+            } else {
+                throw new Exception("Failed to move the uploaded file");
+            }
+        } else {
+            throw new Exception("File upload error: " . $file['error']);
+        }
+    } else {
+        throw new Exception("No file uploaded");
+    }
+} catch (Exception $e) {
+    // Handle the error without exposing undefined variables
+    $errorMessage = "Error: " . $e->getMessage();
+    $response = ["success" => false,
+    "message" => $errorMessage];
 }
 
-$answer['text'] = $text;
-$answer['location'] = $location;
-
-
-
-
-echo json_encode($answer);
-?>
+header('Content-Type: application/json');
+echo json_encode($response);
